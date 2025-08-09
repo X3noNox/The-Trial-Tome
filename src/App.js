@@ -7,8 +7,8 @@ import './App.css';
 const ESO_API_CONFIG = {
   baseURL: 'https://www.esologs.com/api/v2/client',
   // Replace these with your actual credentials
-  clientId: 'YOUR_CLIENT_ID',
-  clientSecret: 'YOUR_CLIENT_SECRET'
+  clientId: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET
 };
 
 // API Service Functions
