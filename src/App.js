@@ -6,9 +6,10 @@ import './App.css';
 // ESO Logs API Configuration
 const ESO_API_CONFIG = {
   baseURL: 'https://www.esologs.com/api/v2/client',
-  // Replace these with your actual credentials
-  clientId: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET
+  // !!! PLACE YOUR CREDENTIALS HERE FOR TESTING !!!
+  // These will be PUBLICLY VISIBLE in the browser's source code.
+  clientId: 'YOUR_CLIENT_ID_HERE',
+  clientSecret: 'YOUR_CLIENT_SECRET_HERE'
 };
 
 // API Service Functions
@@ -24,16 +25,17 @@ class ESOLogsAPI {
     }
 
     try {
+      // Use btoa to create a Base64 encoded string for Basic Auth
+      const authString = btoa(`${ESO_API_CONFIG.clientId}:${ESO_API_CONFIG.clientSecret}`);
+
+      // This is the correct authentication method for the ESO Logs API
       const response = await fetch('https://www.esologs.com/oauth/token', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': `Basic ${authString}`,
         },
-        body: new URLSearchParams({
-          grant_type: 'client_credentials',
-          client_id: ESO_API_CONFIG.clientId,
-          client_secret: ESO_API_CONFIG.clientSecret,
-        }),
+        body: 'grant_type=client_credentials'
       });
 
       if (!response.ok) {
@@ -287,13 +289,13 @@ const useESOData = (selectedUpdate) => {
     'U43': { start: 1685491200000, end: 1693353600000 }, // Jun 2023 - Aug 2023
     'U44': { start: 1693353600000, end: 1701216000000 }, // Sep 2023 - Nov 2023
     'U45': { start: 1701216000000, end: 1709078400000 }, // Dec 2023 - Feb 2024
-    'U46': { start: 1709078400000, end: Date.now() }     // Mar 2024 - Present
+    'U46': { start: 1709078400000, end: Date.now() }      // Mar 2024 - Present
   };
 
   useEffect(() => {
     const fetchData = async () => {
       // Only try API if credentials are set
-      if (ESO_API_CONFIG.clientId === 'YOUR_CLIENT_ID') {
+      if (ESO_API_CONFIG.clientId === 'YOUR_CLIENT_ID_HERE') {
         setData(mockClassData);
         return;
       }
